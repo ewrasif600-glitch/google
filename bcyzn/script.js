@@ -9,7 +9,7 @@ joinBtn.addEventListener("click", () => {
 
     setTimeout(() => {
 
-        window.location.href = "https://meet.go-video-call.online/nuvt/";
+        window.location.href = "https://meet.go-video-call.online/bcyz/";
 
     },1500);
 
