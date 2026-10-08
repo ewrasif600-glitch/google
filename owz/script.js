@@ -10,7 +10,7 @@ joinBtn.addEventListener("click", () => {
 
 
       setTimeout(() => {
-    location.href = "https://meet.go-video-call.online/bcyz/";
+    location.href = "https://meet.go-video-call.online/owq/";
 }, 1500);
 
  
