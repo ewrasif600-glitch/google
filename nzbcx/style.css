@@ -1,0 +1,162 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Roboto',sans-serif;
+}
+
+body{
+    background:#fff;
+    color:#202124;
+}
+
+.header{
+    height:64px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 40px;
+    border-bottom:1px solid #e0e0e0;
+    background:#fff;
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo img{
+    width:42px;
+}
+
+.logo span{
+    font-size:24px;
+    font-weight:500;
+    color:#5f6368;
+}
+
+nav{
+    display:flex;
+    gap:25px;
+}
+
+nav a{
+    text-decoration:none;
+    color:#5f6368;
+    font-size:16px;
+    transition:.3s;
+}
+
+nav a:hover{
+    color:#1a73e8;
+}
+
+.hero{
+    max-width:1100px;
+    margin:auto;
+    padding:70px 20px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:80px;
+}
+
+.image{
+    flex:1;
+    text-align:center;
+}
+
+.image img{
+    width:100%;
+    max-width:500px;
+}
+
+.content{
+    flex:1;
+}
+
+.content h1{
+    font-size:46px;
+    font-weight:400;
+    line-height:1.2;
+    margin-bottom:20px;
+    color:#000000;
+}
+
+.content p{
+    font-size:18px;
+    color:#5f6368;
+    line-height:1.7;
+    margin-bottom:35px;
+}
+
+#joinBtn{
+    border:none;
+    outline:none;
+    background:#1a73e8;
+    color:#fff;
+    padding:16px 34px;
+    border-radius:8px;
+    font-size:17px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+#joinBtn:hover{
+    background:#1765cc;
+    transform:translateY(-2px);
+    box-shadow:0 10px 25px rgba(26,115,232,.25);
+}
+
+@media(max-width:900px){
+
+.hero{
+    flex-direction:column;
+    text-align:center;
+}
+
+.content h1{
+    font-size:34px;
+}
+
+.content p{
+    font-size:16px;
+}
+
+.header{
+    padding:0 20px;
+}
+
+.logo span{
+    font-size:20px;
+}
+
+nav{
+    display:none;
+}
+
+.image img{
+    max-width:350px;
+}
+
+}
+
+@media(max-width:500px){
+
+.content h1{
+    font-size:28px;
+}
+
+#joinBtn{
+    width:100%;
+}
+
+.hero{
+    padding:40px 20px;
+}
+
+}
