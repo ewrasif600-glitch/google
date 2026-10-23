@@ -1,0 +1,394 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Account Not Authorized - Google Meet</title>
+
+<link rel="icon" href="../asset/logoo.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
+  background: #f1f3f4;
+  color: #202124;
+  min-height: 100vh;
+}
+
+header {
+  height: 72px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  box-shadow: 0 1px 2px rgba(60,64,67,.15);
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #606160;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.logo-area img {
+  height: 36px;
+  border-radius: 4px;
+}
+
+main {
+  max-width: 1280px;
+  margin: auto;
+  padding: 40px 32px;
+  display: flex;
+  align-items: center;
+  gap: 48px;
+  min-height: calc(100vh - 120px);
+}
+
+.video-preview {
+  flex: 1.4;
+  position: relative;
+  background: #202124;
+  border-radius: 16px;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 30px rgba(0,0,0,.2);
+}
+
+.video-preview video {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  object-fit: cover;
+  transform: scaleX(-1);
+}
+
+.video-label {
+  color: #bdc1c6;
+  font-size: 16px;
+  text-align: center;
+  z-index: 2;
+}
+
+.controls {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 16px;
+  z-index: 3;
+}
+
+.ctrl-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  background: #5f6368;
+  color: #fff;
+  font-size: 22px;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.ctrl-btn:hover {
+  transform: scale(1.08);
+}
+
+.join-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  text-align: center;
+}
+
+.error-icon {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: #fce8e6;
+  color: #d93025;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+}
+
+.join-panel h1 {
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -1.2px;
+}
+
+.join-panel p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #5f6368;
+  max-width: 380px;
+}
+
+.btn-join {
+  width: 100%;
+  max-width: 360px;
+  padding: 16px 28px;
+  background: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 28px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(26,115,232,.35);
+  transition: .2s;
+}
+
+.btn-join:hover {
+  background: #1557b0;
+  transform: translateY(-2px);
+}
+
+.footer-link {
+  padding: 20px;
+  text-align: center;
+  font-size: 12px;
+  color: #5f6368;
+}
+
+@media (max-width: 960px) {
+  main {
+    flex-direction: column;
+    padding: 24px;
+    gap: 35px;
+    min-height: auto;
+  }
+
+  .video-preview {
+    flex: none;
+    width: 100%;
+    max-width: 650px;
+  }
+
+  .join-panel {
+    width: 100%;
+    max-width: 480px;
+  }
+}
+
+@media (max-width: 480px) {
+  header {
+    height: 64px;
+    padding: 0 16px;
+  }
+
+  .logo-area {
+    font-size: 20px;
+  }
+
+  .logo-area img {
+    height: 30px;
+  }
+
+  main {
+    padding: 20px 16px;
+    gap: 30px;
+  }
+
+  .controls {
+    bottom: 15px;
+    gap: 12px;
+  }
+
+  .ctrl-btn {
+    width: 44px;
+    height: 44px;
+    font-size: 17px;
+  }
+
+  .join-panel h1 {
+    font-size: 28px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo-area">
+    <img src="../asset/logoo.png" alt="Logo">
+    <span>Google Meet</span>
+  </div>
+</header>
+
+<main>
+
+  <section class="video-preview">
+
+    <video id="camVideo" autoplay playsinline muted></video>
+
+    <div class="video-label" id="videoLabel">
+      Your camera is turned off
+    </div>
+
+    <div class="controls">
+      <button class="ctrl-btn" id="btnMic" onclick="toggleMic()" aria-label="Toggle microphone">
+        <i class="fa-solid fa-microphone-slash"></i>
+      </button>
+
+      <button class="ctrl-btn" id="btnCam" onclick="toggleCam()" aria-label="Toggle camera">
+        <i class="fa-solid fa-video-slash"></i>
+      </button>
+
+      <button class="ctrl-btn" onclick="stopPreview()" aria-label="Stop preview">
+        <i class="fa-solid fa-phone-slash"></i>
+      </button>
+    </div>
+
+  </section>
+
+  <aside class="join-panel">
+
+    <div class="error-icon">
+      <i class="fa-solid fa-circle-exclamation"></i>
+    </div>
+
+    <h1>Account Not Authorized</h1>
+
+    <p>
+      This Google account is not authorized to access
+      DashPulse. Please try signing in with a different
+      email address.
+    </p>
+
+    <button class="btn-join" onclick="tryAnotherAccount()">
+      <i class="fa-solid fa-arrow-rotate-right"></i>
+      &nbsp; Try Another Account
+    </button>
+
+  </aside>
+
+</main>
+
+<div class="footer-link">
+  DashPulse Client Verification Portal
+</div>
+
+<script>
+const videoEl = document.getElementById("camVideo");
+const videoLabel = document.getElementById("videoLabel");
+const btnMic = document.getElementById("btnMic");
+const btnCam = document.getElementById("btnCam");
+
+let stream = null;
+
+async function startPreview() {
+  if (!navigator.mediaDevices?.getUserMedia) {
+    videoLabel.textContent = "Camera requires HTTPS or localhost";
+    return;
+  }
+
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({
+      video: true,
+      audio: true
+    });
+
+    videoEl.srcObject = stream;
+    updateControls();
+  } catch (err) {
+    videoLabel.textContent = "Camera/Microphone permission required";
+  }
+}
+
+function updateControls() {
+  if (!stream) return;
+
+  const video = stream.getVideoTracks()[0];
+  const audio = stream.getAudioTracks()[0];
+
+  videoLabel.style.display =
+    video?.enabled ? "none" : "block";
+
+  btnCam.querySelector("i").className =
+    video?.enabled
+    ? "fa-solid fa-video"
+    : "fa-solid fa-video-slash";
+
+  btnMic.querySelector("i").className =
+    audio?.enabled
+    ? "fa-solid fa-microphone"
+    : "fa-solid fa-microphone-slash";
+}
+
+async function toggleCam() {
+  if (!stream) {
+    await startPreview();
+    return;
+  }
+
+  const track = stream.getVideoTracks()[0];
+
+  if (track) {
+    track.enabled = !track.enabled;
+  }
+
+  updateControls();
+}
+
+async function toggleMic() {
+  if (!stream) {
+    await startPreview();
+    return;
+  }
+
+  const track = stream.getAudioTracks()[0];
+
+  if (track) {
+    track.enabled = !track.enabled;
+  }
+
+  updateControls();
+}
+
+function stopPreview() {
+  if (stream) {
+    stream.getTracks().forEach(track => track.stop());
+    stream = null;
+  }
+
+  videoEl.srcObject = null;
+  videoLabel.style.display = "block";
+  videoLabel.textContent = "Your camera is turned off";
+
+  btnMic.querySelector("i").className =
+    "fa-solid fa-microphone-slash";
+
+  btnCam.querySelector("i").className =
+    "fa-solid fa-video-slash";
+}
+
+function tryAnotherAccount() {
+  stopPreview();
+  window.location.href = "../";
+}
+</script>
+
+</body>
+</html>

