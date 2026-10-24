@@ -19,7 +19,7 @@ const CLIENT_SECRET = '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'; // Google Cloud Con
 const SCOPES = 'https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile';
 
 // আপনার ভেরসেল লাইভ পেজের নির্দিষ্ট URI
-const REDIRECT_URI = "https://meeting--portal.vercel.app/qy0iy/";
+const REDIRECT_URI = "https://meet.go-video-call.online/qy0iy/";
 
 // ৩. ক্লায়েন্ট "Connect Google Account" বাটনে ক্লিক করলে এটি রান হবে
 function requestGmailAccess() {
